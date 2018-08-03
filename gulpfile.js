@@ -12,18 +12,14 @@ gulp.task('html', () => {
         .pipe(gulp.dest('dist/'))
 });
 
-
-gulp.task('server', () => {
-    gulp.src('dist/')
-        .pipe(webserver({
-            livereload: true,
-            open: true
-        }))
-});
-
 gulp.task('img', () => {
     return gulp.src('src/img/**/*.{gif,jpg,png,svg}')
       .pipe(gulp.dest('dist/assets/img/'))
+  })
+
+gulp.task('js', () => {
+    return gulp.src('src/js/**/*.js')
+      .pipe(gulp.dest('dist/assets/js/'))
   })
 
 
@@ -37,12 +33,23 @@ gulp.task('styles', () => {
         .pipe(gulp.dest('dist/assets/css/'))
 })
 
+gulp.task('server', () => {
+    gulp.src('dist/')
+        .pipe(webserver({
+            livereload: true,
+            open: true
+        }))
+});
+
+gulp.task('watch', () => {
+    gulp.watch('src/scss/**/*.scss', ['styles'],cb => cb);
+    gulp.watch('src/**/*.html', ['html'],cb => cb);
+});
 
   gulp.task('start', [
-    'img',
-    'html',
-    'styles',
-    'server'
+    'js',
+    'server',    
+    'watch'
 ], cb => cb);
 
 
